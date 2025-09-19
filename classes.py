@@ -1,6 +1,7 @@
 from dataclasses import dataclass
+import numpy as np
 
-k = 10
+k = 0.5
 
 beta = 0.1
 beta_home = beta
@@ -20,7 +21,7 @@ class Team():
         away_goals = np.log2(1 + 2**(beta_away*(other.attack - self.defense))) * away
         return home_goals, away_goals
 
-    def update(self, other, historic, result, k):
+    def update(self, other, historic, result, k=k):
         expectation = self.match(other, *historic)
 
         home_goal_diff = k * (result[0] - expectation[0])
