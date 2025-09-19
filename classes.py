@@ -12,6 +12,9 @@ class Team():
     attack: float = 0.0
     defense: float = 0.0
 
+    def __str__(self):
+        return f"{self.name} ({self.attack:.0f}/{self.defense:.0f})"
+
     def match(self, other, home, away):
         home_goals = np.log2(1 + 2**(beta_home*(self.attack - other.defense))) * home
         away_goals = np.log2(1 + 2**(beta_away*(other.attack - self.defense))) * away
@@ -28,3 +31,14 @@ class Team():
 
         other.attack += away_goal_diff
         other.defense -= home_goal_diff
+
+class defaultdict(dict):
+    def __init__(self, factory):
+        super().__init__()
+
+        self.factory = factory
+
+    def __missing__(self, key):
+        self[key] = self.factory(key)
+
+        return self[key]
