@@ -2,7 +2,7 @@ from dataclasses import dataclass
 import numpy as np
 from scipy.special import factorial
 import matplotlib.pyplot as plt
-from matplotlib.colors import PowerNorm
+from matplotlib.ticker import PercentFormatter
 
 k = 0.5
 
@@ -40,7 +40,7 @@ class Team():
         other.attack += away_goal_diff
         other.defense -= home_goal_diff
 
-    def show_probability_distribution(self, other, home_advantage, away_advantage, max_goals=4):
+    def show_probability_distribution(self, other, home_advantage, away_advantage, max_goals=4, save=False):
         # Calculate the expected goals for each team
         expected_home_goals, expected_away_goals = self.match(
             other, home=home_advantage, away=away_advantage
@@ -59,21 +59,24 @@ class Team():
                 probabilities[i, j] = prob_home * prob_away
 
         # Plot the heatmap
-        fig, ax = plt.subplots()
-        heatmap = ax.imshow(probabilities, cmap='copper', origin="lower")
+        fig, ax = plt.subplots(figsize=(5, 4.135), layout="constrained")
+        heatmap = ax.imshow(probabilities, cmap='inferno', origin="lower")
 
         # Add labels and a color bar
         ax.set_xticks([])
         ax.set_yticks([])
         # ax.set_xlabel(f'{other.name} Goals')
         # ax.set_ylabel(f'{self.name} Goals')
-        ax.set_title(f'Match Result: {self.name} vs. {other.name}')
-        fig.colorbar(heatmap, label='Probability')
+        ax.set_title(f'{self.name} vs. {other.name}')
+        fig.colorbar(heatmap, label='Wahrscheinlichkeit', format=PercentFormatter(xmax=1.0))
 
         # Add text annotations for each cell
         for i in range(len(home_goals_range)):
             for j in range(len(away_goals_range)):
-                ax.text(j, i, f'{i} : {j}', ha='center', va='center', color='w')
+                ax.text(j, i, f'{i} : {j}', ha='center', va='center', color='g')
+
+        if save:
+            plt.savefig("match_results.png")
 
         plt.show()
 
