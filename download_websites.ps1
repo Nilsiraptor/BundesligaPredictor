@@ -2,7 +2,7 @@ $EndYear = (Get-Date).Year
 
 # Bundesliga
 
-$StartYear = 1963
+$StartYear = 2025
 
 # The base URL for the Bundesliga season data on Transfermarkt.de
 $baseUrl = "https://www.transfermarkt.de/bundesliga/gesamtspielplan/wettbewerb/L1?saison_id="
@@ -52,7 +52,7 @@ Write-Host "Bundesliga Download process completed."
 
 # 2. Bundesliga
 
-$StartYear = 1981
+$StartYear = 2025
 
 # The base URL for the Bundesliga season data on Transfermarkt.de
 $baseUrl = "https://www.transfermarkt.de/2-bundesliga/gesamtspielplan/wettbewerb/L2?saison_id="
