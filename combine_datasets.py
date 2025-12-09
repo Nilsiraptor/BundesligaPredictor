@@ -37,7 +37,7 @@ df = df[mask]
 
 df.to_csv("data/combined.csv", index=False)
 
-print(df.head())
-print(df.tail())
+# print(df.head())
+print(df.tail(9))
 
-print(df.shape)
+# print(df.shape)
