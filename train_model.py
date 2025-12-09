@@ -32,11 +32,11 @@ for index, row in tqdm(df.iterrows(), total=len(df)):
 
     result = row["Heimtore"], row["Gasttore"]
 
-    home_team.update(away_team, l_historic, result)
+    home_team.update(away_team, result)
 
 team_list = [team for team in teams.values()]
 
-team_list.sort(key=lambda x: x.attack+x.defense, reverse=True)
+team_list.sort(key=lambda x: x.score, reverse=True)
 
 df = pd.DataFrame(team_list)
 

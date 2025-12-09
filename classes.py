@@ -17,34 +17,38 @@ def poisson(k, l):
 @dataclass
 class Team():
     name: str
-    attack: float = 0.0
-    defense: float = 0.0
+    home_attack: float = 1.25 / beta_home
+    home_defense: float = 0.0
+    away_attack: float = 0.36 / beta_away
+    away_defense: float = 0.0
 
     def __str__(self):
-        return f"{self.name} ({self.attack:.0f}/{self.defense:.0f})"
+        return f"{self.name} ({self.home_attack:.1f}:{self.home_defense:.1f}/{self.away_attack:.1f}:{self.away_defense:.1f})"
 
-    def match(self, other, home, away):
-        home_goals = np.log2(1 + 2**(beta_home*(self.attack - other.defense))) * home
-        away_goals = np.log2(1 + 2**(beta_away*(other.attack - self.defense))) * away
+    @property
+    def score(self):
+        return self.home_attack + self.home_defense + self.away_attack + self.away_defense
+
+    def match(self, other):
+        home_goals = np.log2(1 + 2**(beta_home*(self.home_attack - other.away_defense)))
+        away_goals = np.log2(1 + 2**(beta_away*(other.away_attack - self.home_defense)))
         return home_goals, away_goals
 
-    def update(self, other, historic, result, k=k):
-        expectation = self.match(other, *historic)
+    def update(self, other, result, k=k):
+        expectation = self.match(other)
 
         home_goal_diff = k * (result[0] - expectation[0])
         away_goal_diff = k * (result[1] - expectation[1])
 
-        self.attack += home_goal_diff
-        self.defense -= away_goal_diff
+        self.home_attack += home_goal_diff
+        self.home_defense -= away_goal_diff
 
-        other.attack += away_goal_diff
-        other.defense -= home_goal_diff
+        other.away_attack += away_goal_diff
+        other.away_defense -= home_goal_diff
 
     def show_probability_distribution(self, other, home_advantage, away_advantage, max_goals=4, save=False):
         # Calculate the expected goals for each team
-        expected_home_goals, expected_away_goals = self.match(
-            other, home=home_advantage, away=away_advantage
-        )
+        expected_home_goals, expected_away_goals = self.match(other)
 
         # Create a grid for the probability distribution
         home_goals_range = np.arange(0, max_goals + 1)
@@ -82,9 +86,7 @@ class Team():
 
     def calculate_win_probabilities(self, other, home_advantage, away_advantage, max_goals=100):
 
-        expected_home_goals, expected_away_goals = self.match(
-            other, home=home_advantage, away=away_advantage
-        )
+        expected_home_goals, expected_away_goals = self.match(other)
 
         home_win_prob = 0.0
         draw_prob = 0.0
