@@ -46,7 +46,7 @@ class Team():
         other.away_attack += away_goal_diff
         other.away_defense -= home_goal_diff
 
-    def show_probability_distribution(self, other, home_advantage, away_advantage, max_goals=4, save=False):
+    def show_probability_distribution(self, other, max_goals=4, save=False):
         # Calculate the expected goals for each team
         expected_home_goals, expected_away_goals = self.match(other)
 
@@ -84,7 +84,7 @@ class Team():
 
         plt.show()
 
-    def calculate_win_probabilities(self, other, home_advantage, away_advantage, max_goals=100):
+    def calculate_win_probabilities(self, other, max_goals=100):
 
         expected_home_goals, expected_away_goals = self.match(other)
 
