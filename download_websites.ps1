@@ -1,4 +1,4 @@
-$EndYear = (Get-Date).Year
+$EndYear = 2025
 
 # Bundesliga
 
