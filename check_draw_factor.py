@@ -9,6 +9,8 @@ from classes import Team
 TRAIN_UP_TO = "2023-07-01"
 DRAW_FACTORS = [1.0, 1.05, 1.1, 1.15, 1.2, 1.25, 1.3, 1.35, 1.4, 1.45, 1.5, 1.6, 1.7, 1.8, 2.0]
 DRAW_FACTORS, dx = list(np.linspace(1.0, 1.5, 10001, True, True))
+# DRAW_FACTORS = [0, 1/12.7839, 1/18]
+# DRAW_FACTORS, dx = np.linspace(0.0, 1/20, 1001, True, True)
 
 # --- Helper Functions ---
 
@@ -123,6 +125,7 @@ def run_optimization():
                 for tip, val in base_exp_points.items():
                     final_val = val
                     if tip[0] == tip[1]:
+                        # final_val *= 1.0 + sum(tip)*f
                         final_val *= f
 
                     if final_val > max_val:
@@ -173,7 +176,7 @@ def run_optimization():
                  arrowprops=dict(facecolor='black', shrink=0.05),
                  ha='center', fontsize=10, fontweight='bold')
 
-    plt.tight_layout()
+    # plt.tight_layout()
     plt.show()
 
 if __name__ == "__main__":
